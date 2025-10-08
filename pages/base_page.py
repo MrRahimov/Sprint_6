@@ -33,3 +33,17 @@ class BasePage:
         self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", el)
         return el
 
+    def current_url(self):
+        return self.driver.current_url
+
+    def window_handles(self):
+        return self.driver.window_handles
+
+    def switch_to_window(self, handle):
+        self.driver.switch_to.window(handle)
+
+    def wait_tabs_more_than(self, count, timeout=10):
+        WebDriverWait(self.driver, timeout).until(lambda d: len(d.window_handles) > count)
+
+    def wait_url_not(self, url, timeout=15):
+        WebDriverWait(self.driver, timeout).until(lambda d: d.current_url.lower() != url.lower())
