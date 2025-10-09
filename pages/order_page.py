@@ -1,16 +1,21 @@
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+
 from pages.base_page import BasePage
 from locators.order_page_locators import OrderPageLocators as L
+
 
 class OrderPage(BasePage):
     def fill_step1(self, first, last, address, metro, phone):
         self.find(L.FIRST_NAME).send_keys(first)
         self.find(L.LAST_NAME).send_keys(last)
         self.find(L.ADDRESS).send_keys(address)
+
         metro_input = self.find(L.METRO)
         metro_input.clear()
         metro_input.send_keys(metro)
         metro_input.send_keys(Keys.DOWN, Keys.ENTER)
+
         self.find(L.PHONE).send_keys(phone)
         self.click(L.NEXT_BUTTON)
 
@@ -20,12 +25,12 @@ class OrderPage(BasePage):
         date_input.clear()
         date_input.send_keys(date_str)
         date_input.send_keys(Keys.ENTER)
+
         self.click(L.RENT_DROPDOWN)
         self.click(L.RENT_OPTION(rent_text))
-        if color == 'black':
-            self.click(L.COLOR_BLACK)
-        elif color == 'grey':
-            self.click(L.COLOR_GREY)
+
+        self.click((By.ID, color))
+
         if comment:
             self.find(L.COMMENT).send_keys(comment)
 
