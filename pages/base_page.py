@@ -4,6 +4,7 @@ from selenium.common.exceptions import ElementClickInterceptedException
 
 DEFAULT_TIMEOUT = 10
 
+
 class BasePage:
     def __init__(self, driver):
         self.driver = driver
@@ -32,7 +33,7 @@ class BasePage:
         el = self.find(locator)
         self.driver.execute_script("arguments[0].scrollIntoView({block:'center'});", el)
         return el
-
+ 
     def current_url(self):
         return self.driver.current_url
 
@@ -43,7 +44,16 @@ class BasePage:
         self.driver.switch_to.window(handle)
 
     def wait_tabs_more_than(self, count, timeout=10):
-        WebDriverWait(self.driver, timeout).until(lambda d: len(d.window_handles) > count)
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: len(d.window_handles) > count
+        )
 
     def wait_url_not(self, url, timeout=15):
-        WebDriverWait(self.driver, timeout).until(lambda d: d.current_url.lower() != url.lower())
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: d.current_url.lower() != url.lower()
+        )
+
+    def wait_text_not_empty(self, locator, timeout=DEFAULT_TIMEOUT):
+        WebDriverWait(self.driver, timeout).until(
+            lambda d: d.find_element(*locator).text.strip() != ""
+        )

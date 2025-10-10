@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
 from pages.base_page import BasePage
 from data.urls import BASE_URL
+
 
 class FaqPage(BasePage):
     URL = BASE_URL
@@ -18,10 +18,8 @@ class FaqPage(BasePage):
     def expand_question(self, i: int):
         self.scroll_into_view(self.question(i))
         self.click(self.question(i))
-        panel = self.find(self.answer(i))
-        WebDriverWait(self.driver, 10).until(lambda d: panel.text.strip() != "")
-        return panel
+        self.wait_text_not_empty(self.answer(i))
+        return self.find(self.answer(i))
 
     def get_answer_text(self, i: int) -> str:
         return self.get_text(self.answer(i)).strip()
-
